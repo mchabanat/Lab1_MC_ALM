@@ -20,6 +20,10 @@ public class S_BallShot : MonoBehaviour
 
     public float force = 5;
 
+    public float timeBeforeDestroy = 4f;
+
+    private bool isShot = false;
+
 
     // Start is called before the first frame update
     void Start()
@@ -40,14 +44,14 @@ public class S_BallShot : MonoBehaviour
     void shot()
     {
         //On click, save coordinates of the mouse and when the mouse is released, calculate the direction and force of the ball
-        if (Input.GetMouseButtonDown(0) && !isClicked)
+        if (Input.GetMouseButtonDown(0) && !isClicked && !isShot)
         {
             click = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             isClicked = true;
             self = transform.position;
         }
 
-        if (isClicked)
+        if (isClicked && !isShot)
         {
 
             Vector2 current = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -72,6 +76,8 @@ public class S_BallShot : MonoBehaviour
                 {
                     clearLine(line);
                 }
+                isShot = true;
+                StartCoroutine(DestroyBall());
             }
         }
     }
@@ -101,11 +107,23 @@ public class S_BallShot : MonoBehaviour
 
     Color DefineColor(Vector2 start, Vector2 end)
     {
-        float maxDistance = 10f; 
+        float maxDistance = 10f;
         float distance = Vector2.Distance(start, end);
-        float t = Mathf.Clamp01(distance / maxDistance); 
+        float t = Mathf.Clamp01(distance / maxDistance);
         Color color = Color.Lerp(Color.white, Color.red, t);
         return color;
     }
 
+    //Coroutine to destroy the ball after a certain time
+    IEnumerator DestroyBall()
+    {
+        yield return new WaitForSeconds(timeBeforeDestroy);
+        Destroy(gameObject);
+    }
+
+
+    public bool getIsShot()
+    {
+        return isShot;
+    }
 }
