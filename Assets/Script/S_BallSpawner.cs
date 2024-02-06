@@ -32,9 +32,7 @@ public class S_BallSpawner : MonoBehaviour
     IEnumerator SpawnBall()
     {
         isSpawned = true;
-        Debug.Log("En train de spawn ....");
         yield return new WaitForSeconds(spawnTime);
-        Debug.Log("Spawned");
         actualBall = Instantiate(ballPrefab, transform.position, Quaternion.identity);
         
     }
