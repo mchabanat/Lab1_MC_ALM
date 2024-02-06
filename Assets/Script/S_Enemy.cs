@@ -16,11 +16,17 @@ public class S_Enemy : MonoBehaviour
 
     private Rigidbody2D rb;
 
+    public Vector2 sizeOfEnemy = new Vector2(0.8f, 1.2f);
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         initialDelay = Random.Range(0f, 2f);
         GameManager = GameObject.Find("GameMode");
+        float size = Random.Range(sizeOfEnemy.x, sizeOfEnemy.y);
+        GetComponent<Transform>().localScale = new Vector3(size, size, 1);
+        rotationAmplitude = Random.Range(rotationAmplitude - 5, rotationAmplitude + 5);
+        rotationSpeed = Random.Range(rotationSpeed - 0.5f, rotationSpeed + 0.5f);
     }
 
     void Update()
